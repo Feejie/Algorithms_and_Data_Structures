@@ -1,4 +1,4 @@
-package Lesson_4.iterator;
+package Lesson_4.dz2;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

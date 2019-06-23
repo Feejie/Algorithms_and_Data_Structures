@@ -8,13 +8,37 @@ import Lesson_3.stack.StackImpl;
 public class Main4 {
 
     public static void main(String[] args) {
-//        linkedListTest();
+        linkedListTest();
+//        twoSideLinkedListTest();
 //        stackTest();
 //        queueTest();
     }
 
     private static void linkedListTest() {
-        //        LinkedList<Integer> linkedList = new SimpleLinkedListImpl<>();
+        LinkedList<Integer> linkedList = new SimpleLinkedListImpl<>();
+        linkedList.insertFirst(1);
+        linkedList.insertFirst(2);
+        linkedList.insertFirst(3);
+        linkedList.insertFirst(4);
+
+        for (Integer integer : linkedList) {
+            System.out.println(integer);
+        }
+
+        linkedList.display();
+
+        System.out.println("Find 2: " + linkedList.contains(2));
+        System.out.println("Find 1: " + linkedList.contains(1));
+        System.out.println("Find 4: " + linkedList.contains(4));
+        System.out.println("Find 444: " + linkedList.contains(444));
+
+        linkedList.removeFirst();
+        linkedList.remove(2);
+
+        linkedList.display();
+    }
+
+    private static void twoSideLinkedListTest() {
         TwoSideLinkedList<Integer> linkedList = new TwoSideLinkedListImpl<>();
         linkedList.insertFirst(1);
         linkedList.insertFirst(2);

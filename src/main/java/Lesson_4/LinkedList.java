@@ -1,6 +1,6 @@
 package Lesson_4;
 
-public interface LinkedList<E> {
+public interface LinkedList<E> extends Iterable<E>{
 
     static class Entry<E> {
         public final E value;

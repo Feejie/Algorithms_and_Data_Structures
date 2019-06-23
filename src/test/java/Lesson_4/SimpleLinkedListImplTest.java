@@ -1,5 +1,6 @@
 package Lesson_4;
 
+import Lesson_4.iterator.ListIterator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +35,13 @@ class SimpleLinkedListImplTest {
         assertEquals(3, linkedList.removeFirst());
         assertTrue(linkedList.remove(1));
         assertFalse(linkedList.remove(5));
+    }
+
+    @Test
+    void iteratorTest() {
+        ListIterator<Integer> iterator = (ListIterator<Integer>) linkedList.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals(3, iterator.next());
     }
 
 }

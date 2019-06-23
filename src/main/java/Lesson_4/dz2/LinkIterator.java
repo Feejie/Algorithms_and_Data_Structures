@@ -1,4 +1,4 @@
-package Lesson_4.iterator;
+package Lesson_4.dz2;
 
 public interface LinkIterator {
 
