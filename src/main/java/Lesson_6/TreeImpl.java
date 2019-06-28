@@ -7,6 +7,12 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
     private Node<E> root;
     private int size;
 
+    private int maxLevel;
+
+    public TreeImpl(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
     @Override
     public boolean add(E value) {
         Node<E> newNode = new Node<>(value);
@@ -17,6 +23,11 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
         NodeAndParent nodeAndParent = doFind(value);
         if (nodeAndParent.current != null) {
+            return false;
+        }
+
+        int parentLevel = nodeAndParent.parent.getLevel();   // !!
+        if (parentLevel > maxLevel - 1) {
             return false;
         }
 
@@ -42,12 +53,17 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         Node<E> parent = null;
         Node<E> current = this.root;
 
+        int nodeLevel = 0;
+
         while (current != null) {
             if (current.getValue().equals(value)) {
+                current.setLevel(++nodeLevel);   // !!
                 return new NodeAndParent(current, parent);
             }
 
             parent = current;
+            parent.setLevel(++nodeLevel);
+
             if (current.shouldBeLeft(value)) {
                 current = current.getLeftChild();
             } else {
@@ -248,6 +264,22 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
             nBlanks /= 2;
         }
         System.out.println("................................................................");
+    }
+
+    @Override
+    public boolean isBalanced() {
+        return isBalanced(root);
+    }
+
+    private boolean isBalanced(Node node) {
+        return (node == null) ||
+                isBalanced(node.getLeftChild()) &&
+                        isBalanced(node.getRightChild()) &&
+                        Math.abs(height(node.getLeftChild()) - height(node.getRightChild())) <= 1;
+    }
+
+    private int height(Node node) {
+        return node == null ? 0 : 1 + Math.max(height(node.getLeftChild()), height(node.getRightChild()));
     }
 
     private class NodeAndParent {
