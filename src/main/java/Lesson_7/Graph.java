@@ -116,6 +116,66 @@ public class Graph {
         resetVertexState();
     }
 
+    public Stack<Vertex> findShortPathBfs(String startLabel, String finishLabel) {
+        int startIndex = indexOf(startLabel);
+        int finishIndex = indexOf(finishLabel);
+
+        if (startIndex == -1) {
+            throw new IllegalArgumentException("Invalid startLabel: " + startLabel);
+        }
+        if (finishIndex == -1) {
+            throw new IllegalArgumentException("Invalid finishLabel: " + finishLabel);
+        }
+
+        Queue<Vertex> queue = new LinkedList<>();
+        Vertex vertex = vertexList.get(startIndex);
+        visitVertexToShortPath(queue, vertex);
+
+        while (!queue.isEmpty()) {
+            vertex = getNearUnvisitedVertex(queue.peek());
+            if (vertex != null) {
+                visitVertexToShortPath(queue, vertex);
+                vertex.setPrevious(queue.peek());
+
+                if (vertex.getLabel().equals(finishLabel)) {
+                    return getPath(vertex);
+                }
+
+            } else {
+                queue.remove();
+            }
+        }
+
+        resetVertexState();
+        return null;
+    }
+
+    private Stack<Vertex> getPath(Vertex vertex) {
+        Stack<Vertex> stack = new Stack<>();
+        Vertex current = vertex;
+
+        while (current != null) {
+            stack.push(current);
+            current = current.getPrevious();
+        }
+        return stack;
+    }
+
+    public void showShortPath(String startLabel, String finishLabel) {
+        Stack<Vertex> stack = findShortPathBfs(startLabel, finishLabel);
+        StringBuilder sb = new StringBuilder();
+
+        while (!stack.isEmpty()) {
+            if (stack.peek() != stack.firstElement()) {
+                sb.append(stack.pop().getLabel()).append(" - ");
+            } else {
+                sb.append(stack.pop().getLabel());
+            }
+        }
+
+        System.out.println("Short path: " + sb);
+    }
+
     private void resetVertexState() {
         for (int i = 0; i < size; i++) {
             vertexList.get(i).setVisited(false);
@@ -141,6 +201,11 @@ public class Graph {
 
     private void visitVertex(Queue<Vertex> queue, Vertex vertex) {
         displayVertex(vertex);
+        queue.add(vertex);
+        vertex.setVisited(true);
+    }
+
+    private void visitVertexToShortPath(Queue<Vertex> queue, Vertex vertex) {
         queue.add(vertex);
         vertex.setVisited(true);
     }
